@@ -8,7 +8,7 @@ class MobileResponsive extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text('MangaWare'),
       ),
       body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth < 350) {

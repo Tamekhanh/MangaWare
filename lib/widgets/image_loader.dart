@@ -55,7 +55,7 @@ class _ImageLoaderState extends State<ImageLoader> {
       errorBuilder: (context, error, stackTrace) {
         retryTimer?.cancel();
         retryTimer = Timer(const Duration(seconds: 5), retry);
-        return const Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator(padding: EdgeInsets.all(100),));
       },
     );
   }

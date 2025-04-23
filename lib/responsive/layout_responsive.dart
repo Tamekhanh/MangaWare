@@ -14,7 +14,15 @@ class LayoutResponsive extends StatelessWidget {
             if (constraints.maxWidth < 600) {
               return const MobileResponsive();
             } else if (constraints.maxWidth < 1200) {
-              return const TabletResponsive();
+              if (constraints.maxWidth > constraints.maxHeight) {
+                if(constraints.maxHeight < 600) {
+                  return const MobileResponsive();
+                } else {
+                  return TabletResponsive();
+                }
+              } else {
+                return const TabletResponsive();
+              }
             } else {
               return const DesktopResponsive();
             }

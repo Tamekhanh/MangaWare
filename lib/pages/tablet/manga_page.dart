@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:manga_reading_ware/datas/manga_data.dart';
 import 'package:manga_reading_ware/pages/tablet/chapter_layout.dart';
 
-class MangaPage extends StatelessWidget {
+class MangaPage extends StatefulWidget {
   const MangaPage({super.key, required this.mangaId});
 
   final int mangaId;
 
   @override
+  State<MangaPage> createState() => _MangaPageState();
+}
+
+class _MangaPageState extends State<MangaPage> {
+  bool isHidden = true;
+  @override
   Widget build(BuildContext context) {
-    final manga = data[mangaId];
+    final manga = data[widget.mangaId];
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -45,7 +51,7 @@ class MangaPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChapterLayout(mangaId: mangaId, chapterId: 0),
+                                builder: (context) => ChapterLayout(mangaId: widget.mangaId, chapterId: 0),
                               ),
                             );
                           },
@@ -99,8 +105,26 @@ class MangaPage extends StatelessWidget {
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
+                maxLines: isHidden ? 3 : null,
               ),
-
+              Container(
+                width: double.infinity,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isHidden = !isHidden;
+                    });
+                  },
+                  child: Text(isHidden ? "Show More" : "Show Less"),
+                ),
+              ),
               const SizedBox(height: 24),
 
               const Text(
@@ -140,7 +164,7 @@ class MangaPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => ChapterLayout(mangaId: mangaId, chapterId: index),
+                              builder: (_) => ChapterLayout(mangaId: widget.mangaId, chapterId: index),
                             ),
                           );
                         },

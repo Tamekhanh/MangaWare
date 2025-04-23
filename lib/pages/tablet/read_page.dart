@@ -11,20 +11,20 @@ class ReadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ListView.builder(
-          itemCount: data[mangaId].chapters[chapterId].pages.length,
-          itemBuilder: (context, index) {
-            //https://api.allorigins.win/raw?url=
-            return Container(
-              width: MediaQuery.sizeOf(context).width * 0.5,
+      body: ListView.builder(
+        itemCount: data[mangaId].chapters[chapterId].pages.length,
+        itemBuilder: (context, index) {
+          //https://api.allorigins.win/raw?url=
+          return Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.75,
               child: ImageLoader(
                 imageUrl:
-                    "${data[mangaId].chapters[chapterId].pages[index]}",
+                "${data[mangaId].chapters[chapterId].pages[index]}",
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

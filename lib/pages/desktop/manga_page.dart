@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:manga_reading_ware/datas/manga_data.dart';
 import 'package:manga_reading_ware/pages/desktop/chapter_layout.dart';
+import 'package:manga_reading_ware/providers/favoriteManga.dart';
+import 'package:provider/provider.dart';
 
 class MangaPage extends StatefulWidget {
   const MangaPage({super.key, required this.mangaId});
@@ -15,6 +17,7 @@ class _MangaPageState extends State<MangaPage> {
   bool isHidden = true;
   @override
   Widget build(BuildContext context) {
+    final isFavorite = Provider.of<FavoriteProvider>(context).isFavorite(widget.mangaId.toString());
     final manga = data[widget.mangaId];
 
     return Scaffold(
@@ -59,6 +62,30 @@ class _MangaPageState extends State<MangaPage> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(Colors.blue),
                             foregroundColor: MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        OutlinedButton(
+                          onPressed: () {
+                            final favoriteProvider = Provider.of<FavoriteProvider>(context, listen: false);
+                            final mangaIdStr = widget.mangaId.toString();
+
+                            if (favoriteProvider.isFavorite(mangaIdStr)) {
+                              final toRemove = favoriteProvider.favoriteManga.firstWhere((fav) => fav.mangaId == mangaIdStr);
+                              favoriteProvider.removeFavorite(toRemove);
+                            } else {
+                              favoriteProvider.addFavorite(mangaIdStr);
+                            }
+                          },
+                          child: Text(isFavorite ? "Remove from Favorites" : "Add to Favorites"),
+                          style: ButtonStyle(
+                            overlayColor: MaterialStateProperty.all(Colors.pink),
+                            foregroundColor: MaterialStateProperty.all(Colors.pink),
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),

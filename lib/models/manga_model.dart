@@ -50,3 +50,29 @@ class ChapModel {
     );
   }
 }
+
+class MangaFavorite {
+  final String mangaId;
+
+  MangaFavorite({required this.mangaId});
+
+  factory MangaFavorite.fromJson(Map<String, dynamic> json) {
+    return MangaFavorite(
+      mangaId: json['manga_id'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'manga_id': mangaId,
+    };
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is MangaFavorite && runtimeType == other.runtimeType && mangaId == other.mangaId;
+
+  @override
+  int get hashCode => mangaId.hashCode;
+}

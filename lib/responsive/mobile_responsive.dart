@@ -1,8 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:manga_reading_ware/pages/mobile/favorite_page.dart';
 import 'package:manga_reading_ware/pages/mobile/home_page.dart';
 
-class MobileResponsive extends StatelessWidget {
+class MobileResponsive extends StatefulWidget {
   const MobileResponsive({super.key});
+
+  @override
+  State<MobileResponsive> createState() => _MobileResponsiveState();
+}
+
+class _MobileResponsiveState extends State<MobileResponsive> {
+  int _selectedIndex = 0;
+
+  late List<Widget> _pages;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Determine width for responsive HomePage
+    final screenWidth = MediaQuery.of(context).size.width;
+    int width = 2;
+    if (screenWidth < 350) {
+      width = 0;
+    } else if (screenWidth < 510) {
+      width = 1;
+    }
+
+    _pages = [
+      HomePage(width: width),
+      FavoritePage(width: width),
+    ];
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,30 +45,20 @@ class MobileResponsive extends StatelessWidget {
       appBar: AppBar(
         title: const Text('MangaWare'),
       ),
-      body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth < 350) {
-          return const HomePage(width: 0);
-        } else if (constraints.maxWidth < 510) {
-          return const HomePage(width: 1);
-        } else {
-          return const HomePage(width: 2);
-        }
-      }),
+      body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Favorites',
-            ),
-          ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+        ],
       ),
     );
   }
